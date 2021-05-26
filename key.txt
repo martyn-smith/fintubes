@@ -1,0 +1,231 @@
+
+----------------------------------------------------------------------------------------------------------------------------------
+   Aut     NR     NFL     Ts      Ts-Tp     G        x         h       ng      di       nf      hal        alfa    beta    L         
+                           C        C    kg/m^2/s           W/m^2/K             m                m                         m
+
+   DL       DV        RMUL           RMUV      CPL      CPV        CTL     RR          TES      CTV     PRED
+ kg/m^3   kg/m^3     kg/m/s         kg/m/s    J/kg/K  J/kg/K      W/m/K   J/kg         N/m     W/m/K   
+----------------------------------------------------------------------------------------------------------------------------------
+
+Experimental local heat transfer coefficient during condensation of refrigerants inside microfin tubes
+------------------------------------------------------------------------------
+
+Thermodynamics and thermophysical properties of refrigerants from Refprop 7.0
+
+------------------------------------------------------------------------------
+------------------------------------------------------------------------------
+Aut=AUTHOR
+----------------------------------------------------------------------------
+NR= Number of experimental run
+
+*dati inclusi nei lavori fino al 2000*:
+
+ Sc1  100   Schlager LM, Pate MB, Bergles AE. Heat transfer and pressure drop during evaporation and condensation of R22 in 
+            horizontal microfin tubes. Int J Refrig 1989;12:6-14.
+
+ Hi1  200   Tatsumi A, Oizumi K, Hayashi M, Ito M. Application of inner groove tubes to air conditioners. Hitachi Cable Rev
+            1982;1:55-60.
+	        (Hitachi 1982)
+
+ Hi2  300   Shinohara Y, Tobe M. Development of an improved `THERMOFIN TUBE'. Hitachi Cable Rev 1985;4:47-50.
+            (Hitachi 1985)
+
+ Hi3  400   Yasuda K, Ohizumi K, Hori M, Kawamata O. Development of condensing `THERMOFIN-HEX-C TUBE'. Hitachi Cable Rev 1990;
+            9:27-30.
+	        (Hitachi 1990)
+
+ Hi4  500   Hori M, Shinohara H. Internal heat transfer characteristics of small-diameter thermofin tubes. Hitachi Cable Rev 
+            1991;10:85-90.
+		    (Hitachi 1991)
+
+ Ec1  600   Eckels SJ, Pate MB. An experimental comparison of evaporation and condensation heat transfer coeffcients for HFC-
+            134 and CFC-12. Int J Refr 1991;14:70-7.
+
+ Sc2  700   Micro-fin 
+ Sc3  800   Low-fin
+            Schlager LM, Pate MB, Bergles AE. Effect of oil on heat transfer and pressure drop inside augmented tubes during
+            condensation and evaporation of refrigerants (RP-469). Final report, College of Engineering Iowa State Universi-
+		    ty, 1989.
+
+ Kau  900   Kaushik N, Azer NZ. A general heat transfer correlation for condensation inside internally finned tubes. ASHRAE
+            Trans 1988;94:261-76.
+
+ Tor 1400   Torikoshi K, Ebisu T. In-tube heat transfer characteristics of refrigerant mixtures of R32/R134a and HFC32/125/
+            134a. Proc of Int Refr Conf Purdue, 1994. p. 293-8.
+
+ Ec2 1500   Eckels SJ, Doerr TM, Pate MB. In-tube heat transfer and pressure drop of 134a and ester lubricant mixtures in a
+            smooth tube and a microfin tube: part II -- condensation. ASHRAE Trans 1994;100:547�57.
+
+ Aro 1600   Arosio S, Muzzio A, Niro A. Evaporation and condensation heat transfer and pressure drop of R22 inside micro-
+            fin tubes. Proc 14th Nat Heat Transfer Conf, Rome, 1996. p. 227�33.
+
+ Epr 1700   EPRI. Heat transfer characteristics of alternative refrigerants. Project 3412-6424, final report, vol. 1, 1996.
+            (Microfin)
+
+ We1 1800   Micro-fin
+ We2 1900   Cross-grooved
+            Webb RL, Chamra LM, Randlett MR. Advanced microfin tubes for condensation. Int J Heat Mass Transfer 1996;39:
+		    1839�46.
+
+ Ta1 2000   Microfin
+ Ta2 2800   CrossGrooved
+            Tang L. Empirical study of new refrigerant flow condensation inside horizontal smooth and microfin tubes.PhD 
+		    thesis, University of Maryland at College Park, 1997.
+
+ Wol 3000   Thors P, Bogart J., personal communication, 1998. (Wolverine) (Microfin)
+
+ Nis 4/5000 Kedzierski MA, Goncalves JM. Horizontal convective condensation of alternative refrigerants within a microfin
+            tube. NISTIR 6095. US Dept. Commerce, 1997.
+
+ Kim 6000   Kwon JT, Kim MH. Enhanced condensation heat transfer of an alternative refrigerant in a micro-fin tube. Proc
+            3rd Int Conf Multiphase Flow, ICMF'98, Lyon, France, 1998.
+
+ Ec3 7000   Eckels SJ, Doerr TM, Pate MB. Heat transfer and pressure drop during condensation and evaporation of R134a/oil 
+            mixtures in smooth and microfin tubes. ERI-94402 final report RP-630, 1993.
+
+*dati inclusi dopo il 2000*:
+
+ Noz 8000   Nozu S., Honda H. Condensation of Refrigerants in horizontal, spirally grooved microfin tubes: Numerical Ana-
+            lysis of heat transfer in annular flow regime, ASME J.Heat Transfer 2000, Vol. 122, pp. 80-91.
+			(private comm. from Huasheng Wang to A. Cavallini, 2002)
+
+ Miy 9000   Miyara A., Nonaka K., Taniguchi M. Condensation heat transfer and flow pattern inside a herringbone-type micro-
+            fin tube, Int J Refr 2000;23:141-52; also private communication to Huasheng Wang.
+			(private comm. from Huasheng Wang to A. Cavallini, 2002)
+ 
+ Miy 9100	(private comm. from Huasheng Wang to A. Cavallini, 2002) dati aggiunti ottobre 2006
+
+ Cav 10000  Cavallini A., Censi G., Del Col D., Doretti L., Longo G.A., Rossetto L., Zilio C. Experimental heat transfer 
+            coefficient and pressure drop during condensation of R22 and R407C inside a horizontal microfin tube, Int. Heat
+			Transfer Conf, Grenoble, August 18-23, 2002. 
+			Cavallini A., Censi G., Del Col D., Doretti L., Longo G.A., Rossetto L. Condensation heat transfer and pressure
+			drop inside channels for AC/HP application, Int. Heat Transfer Conf., Grenoble, August 18-23, 2002. 
+     10500  Cavallini A., Censi G., Del Col D., Doretti L., Longo G.A., Rossetto L., Heat transfer coefficients of HFC re-
+	        frigerants during condensation at high temperature inside an enhanced tube, Int. Refrigeration Conf. at Purdue,
+			West Lafayette, July 16-19, 2002. 
+
+ MHK 11000  Kim, M.-H., Shin, J.-S., Lim B.-H. Condensation heat transfer of R22 and R410A in horizontal smooth and micro-
+            fin tubes, Zero Leakage-Minimum Charge, IIR-IIF Sections B and E, Stockholm, pp. 253-261, 2002.
+
+ Ec4 12000  Eckels, S.J., Tesene, B.A. A comparison of R-22, R-134a, R-410A and R-407C condensation performance in smooth 
+            and enhanced tubes: Part I, Heat Transfer, ASHRAE Trans., V.105, Pt.2, 1999.
+			Eckels, S.J., Tesene, B.A. Forced convective condensation of refrigerants R-502 and R-507 in smooth and enhan-
+			ced tubes, ASHRAE Trans., V.108, Pt.2, 2002.
+			(also private comm. from SJ Eckels to A. Cavallini, 2000?)
+
+ Har 13000  Haraguchi H. Studies on condensation of HCFC-22, HFC-134a and HCFC-123 in horizontal tubes (in Japanese), Dr. 
+            Eng. Thesis, Kyushu University, 1994.
+            (private comm. from Huasheng Wang to A. Cavallini, 2002)
+
+ Hrn 14100  set 1
+     14200  set 2
+     14300  set 3
+	        Vollrath, J.E., Hrnjak, P.S., Newell, T.A. An experimental investigation of pressure drop and heat transfer in
+			an in-tube condensation system of pure ammonia, ACRC CR-51, University of Illinois at Urbana-Champaign, 97 pp.,
+			2003.
+
+ Hr2 15000  Zilly, J., Jang, J., Hrnjak, P.S., Condensation of CO2 at low temperature inside horizontal microfinned tubes,
+            ACRC CR-49, University of Illinois at Urbana-Champaign, 61 pp.,2003.
+
+*dati inclusi nel 2006*
+
+ col 16000  L. Colombo, A. Lucchini, A. Muzzio, A. Niro, Heat transfer and pressure drop during evaporation and condensation of R134a 
+	inside  two microfin tubes of new design, International heat transfer conference, Sidney Australia, 13-18 August 2006, MPH-10
+
+ HRN 17000  H.B. Komandiwirya, P.S. Hrnjak, T.A. Newell, An experimental Investigation of Pressure Drop and Heat Transfer in a In-tube
+	    	condensation system of Ammonia with and without Miscible oil in smooth and ehnanced tubes, ACRC CR-54 April 2005
+
+Cav06 18000 A. Cavallini, D. Del Col, S. Mancin, Thermal Performance of R410A Condensing in a Microfin Tube,
+	     	International Refrigeration and Air Conditioning Conference at Purdue, July 17-20 2006 Art. R178
+
+Uch	 19000	Uchida M, Itoh M, Shikazono N, Hatada T, Ohtani T, Development of high performance microfin tubes (2nd report: experimental study)
+			Proc. 31th Air Cod. and Refrig. Eng. Joint Conference, Tokyo, Japan 1997 pp 81-84.
+
+
+----------------------------------------------------------------------------
+NFL= Name of refrigerant
+ 11		= R11 
+ 12		= R12 
+ 20		= R410A		(R32/R125		9/16	50/50%)
+ 22		= R22 
+ 32     = R32
+ 64		= R32/R125	(60/40%)
+ 113	= R113
+ 123    = R123
+ 125	= R125
+ 134	= R134a
+ 225	= R290/600	(25/75)
+ 236	= R236ea
+ 250	= R290/600	(50/50)
+ 275	= R290/600	(75/25)
+ 290	= R290 
+ 325	= R290/600a	(25/75)
+ 350	= R290/600a	(50/50)
+ 375	= R290/600a	(75/25)
+ 404	= R404A		(R125/R143a/R134a		44/52/4%)
+ 407	= R407C		(R32/R125/R134a 9/16/18 23/25/52%)
+ 410	= R410A		(R32/R125		9/16	50/50%)
+ 411	= R410A		(R32/R125		9/16	50/50%)
+ 502    = R502      (R22/R115       7/12    48.8/51.2%)
+ 507    = R507A     (R125/R143a     16/22   50/50%)
+ 600	= R600 
+ 1251	= mix		(R125/R236ea	16/29	45/55%)
+ 1252	= mix		(R125/R236ea	16/29	64/36%)
+ 1253	= mix		(R125/R236ea	16/29	27/73%)
+ 1270	= R1270 
+ 1422   = R142b 
+ 2221	= R22/124	(20/80)
+ 2222	= R22/124	(50/50)
+ 2223	= R22/124	(80/20)
+ 6001	= R600a
+------------------------------------------------------------------------------------------------------
+Ts = Refrigerant saturation temperature (°C)
+------------------------------------------------------------------------------------------------------
+Ts - Tp = Refrigerant vapour to tube wall temperature difference
+NOTA: se DT=99.9 il valore non disponibile 
+------------------------------------------------------------------------------------------------------
+G = Refrigerant mass flux (kg.m-2s-1)
+------------------------------------------------------------------------------------------------------
+x = Average vapour quality
+------------------------------------------------------------------------------------------------------
+h = Experimental heat transfer coefficient (W.m-2K-1)
+------------------------------------------------------------------------------------------------------
+NG = 1, microfin (helical spirals)
+NG = 2, crossgrooved
+------------------------------------------------------------------------------------------------------
+di = minimum inside diameter of the tube (m)
+------------------------------------------------------------------------------------------------------
+nf = number of fins in the perimeter
+------------------------------------------------------------------------------------------------------
+hal = fin height (m)
+------------------------------------------------------------------------------------------------------
+alpha = apex angle (total, not semi-angle; measured on a cross section transversal to the tube axis)
+------------------------------------------------------------------------------------------------------
+beta = helix angle 
+------------------------------------------------------------------------------------------------------
+L = tube length (m)
+------------------------------------------------------------------------------------------------------
+dl, dv = liquid and vapour density (kg.m-3)
+------------------------------------------------------------------------------------------------------
+rmul, rmuv = dynamic viscosity (Pa.s)
+------------------------------------------------------------------------------------------------------
+CPL, CPV = gravimetric heat capacity (J.kg-1K-1)
+------------------------------------------------------------------------------------------------------
+CTL, CTV = thermal conductivity (W.m-1K-1)
+------------------------------------------------------------------------------------------------------
+TES = surface tension (N.m-1)
+------------------------------------------------------------------------------------------------------
+RR = latent heat (J.kg-1)
+------------------------------------------------------------------------------------------------------
+PRED = reduced Pressure (Psat / Pcrit)
+------------------------------------------------------------------------------------------------------
+Ptype = 1, low
+Ptype = 2, medium
+Ptype = 3, high
+------------------------------------------------------------------------------------------------------
+
+READ(60,65) AUT,NP,NFL,TS,DT,GBF,XMED,ALFAS,NG,DI,NF,HH,ALFA,BETA,RL
+READ(60,61) DLL,DVV,RMULL,RMUVV,CPLL,CPVV,CTLL,RR,SIGMA,CTVV,pred
+
+FORMAT(1X,2F8.2,2F13.9,2F9.2,F10.5,F11.2,F10.6,F9.5,f8.3)
+FORMAT(A6,2I8,2F9.3,F7.0,F9.3,F12.1,I4,F12.6,I6,F12.6,2F8.1,F7.3)
