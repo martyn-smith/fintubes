@@ -28,6 +28,7 @@ General TODO:
 from functools import partial
 from itertools import product
 import logging
+from typing import Callable
 from markdown import markdown
 from matplotlib import cm
 import matplotlib.gridspec as gridspec
@@ -54,7 +55,7 @@ from statsmodels.stats.outliers_influence import variance_inflation_factor as vi
 import sys
 
 #suppress tensorflow warning messages for failure to detect CUDA. I know.
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'  # FATAL
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'  # FATAL only
 logging.getLogger('tensorflow').setLevel(logging.FATAL)
 
 
@@ -86,7 +87,8 @@ geo_vars = ["di", "hal", "alpha", "beta", "L"]
 op_vars = ["Ts", "TsTp", "G"]
 refrig_vars = ["DL", "DV", "RMUL", "RMUV", "CPL", "CPV", "CTL", "CTV", "TES", "RR", "PRED"]
 categoricals = ["Author", "NG", "NFL", "Ptype"]
-FC_vars = ["Ts", "G", "x", "di", "beta", "CTL", "PRED"]
+#FC_vars = ["Ts", "G", "x", "di", "beta", "CTL", "PRED"]
+FC_vars = ["Ts", "G", "x", "di", "hal", "NG", "CTL", "PRED"]
 Cav_vars = ["RMUL", "RMUV", "DL", "DV", "CPL", "CPV", "CTL", "RR", 
             "TsTp", "G", "x", "NG", "di", "alpha", "beta", "hal"]
 PCA_vars = ["Ts", "TsTp", "G", "x", "di", "nf", "hal", "alpha", "beta", "L", 
@@ -390,8 +392,10 @@ def regress_NN(fintubes, plot):
     # minimum of 50 to get convergence, up to 200 is tolerable time-wise
     epochs = 200
     # use lower rates for exponential, higher for tanh/elu
-    opt = Adam(learning_rate = 0.01)
+    opt = Adam(learning_rate = 0.05)
 
+    #patch for last-minute addition of NG as a var - coerce it to float
+    fintubes.NG = fintubes.NG.astype(float)
     x_train, x_test, y_train, y_test = train_test_split(fintubes[FC_vars], fintubes.h, train_size = 0.6)
 
     layer = Normalization()
@@ -399,8 +403,12 @@ def regress_NN(fintubes, plot):
 
     model = Sequential()
     model.add(layer)
-    model.add(Dense(5, activation="exponential", input_shape=(x_train.shape[1],)))
-    model.add(Dense(5, activation="elu"))
+    model.add(Dense(9, activation="exponential", input_shape=(x_train.shape[1],)))
+    model.add(Dense(9, activation="elu"))
+    #model.add(Dense(3, activation="elu"))
+    #model.add(Dense(3, activation="elu"))
+    #model.add(Dropout(0.05))
+    #model.add(Dense(4, activation="exponential"))
     model.add(Dense(1, activation="elu"))
     model.compile(loss="mae",
                     optimizer=opt,
@@ -432,39 +440,40 @@ def Cavallini(row):
     """
     Implements Cavallini (2009)
     """
-    n_rat = lambda row: (4064.4 * row.di + 23.257*row.di) / int(row.NG)
+    #testcase iloc[4123]
+    n_rat = lambda row: (4064.4 * row.di + 23.257) / int(row.nf)
     C = lambda row: 1.0 if n_rat(row) >= 0.8 else n_rat(row)**1.904
     C1 = lambda row: 1.0 if J_g(row) >= J_g_crit(row) else J_g(row) / J_g_crit(row)
-    Fr = lambda row: row.G**2 / (g * row.di * (row.DL - row.DV)**2)
+    Fr = lambda row: (row.G**2) / (g * row.di * (row.DL - row.DV)**2)
     X_tt = lambda row: (row.RMUL / row.RMUV) ** 0.1 * (row.DV / row.DL ) ** 0.5 * ((1 - row.x) / row.x) ** 0.9
     J_g = lambda row: row.x * row.G / (g * row.di * row.DV * (row.DL - row.DV))**0.5
     J_g_crit = lambda row: 0.6 * ((7.5 / (4.3 * X_tt(row)**1.1111 + 1))**-3 + 2.5**-3)**-0.3333
-    Rx = lambda row: ( ( ( 2 * row.hal * int(row.NG) * ((1 - np.sin(np.radians(row.alpha)) / 2)) 
+    Rx = lambda row: ( ( ( 2 * row.hal * int(row.nf) * ((1 - np.sin(np.radians(row.alpha)) / 2)) 
                            / (pi * row.di * np.cos(np.radians(row.alpha) / 2)) 
                           ) 
                           + 1.0 
                         ) / np.cos(np.radians(row.beta) ) 
                       )
     Prandtl_l = lambda row: row.RMUL * row.CPL / row.CTL
-    h_lo = lambda row: 0.023 * (row.CTL / row.di) * (row.G * row.di / row.RMUL)**0.8 * Prandtl_l(row)**0.4
-    A = lambda row: 1.0 + 1.119 * Fr(row) ** -0.3821 * (Rx(row) - 1) ** 0.3586
-    h_as = lambda row: (h_lo(row) * (1 + (1.128 
-                                        * row.x 
-                                        * (row.DL / row.DV) ** 0.3685 
-                                        * (row.RMUL / row.RMUV) ** 0.2363 
-                                        * (1 - row.RMUV / row.RMUL)  ** 2.144
-                                        * Prandtl_l(row) ** -0.1)
-                                    ) 
-                        )
-    h_ds = lambda row: ( 0.725
-                         * (  (row.CTL ** 3 * row.DL * (row.DL - row.DV) * g * row.RR) 
+    h_lo = lambda row: 0.023 * (row.CTL / row.di) * ((row.G * row.di / row.RMUL)**0.8) * (Prandtl_l(row)**0.4)
+    A = lambda row: 1.0 + 1.119 * (Fr(row) ** -0.3821) * ((Rx(row) - 1) ** 0.3586)
+    h_as = lambda row: h_lo(row) * (1 + (1.128 
+                                        * (row.x ** 0.817)
+                                        * ((row.DL / row.DV) ** 0.3685) 
+                                        * ((row.RMUL / row.RMUV) ** 0.2363) 
+                                        * ((1 - row.RMUV / row.RMUL)  ** 2.144)
+                                        * (Prandtl_l(row) ** -0.1)
+                                        )
+                                    )
+    h_ds = lambda row: ( 0.725 / (1 + 0.741 * (((1 - row.x) / row.x) ** 0.3321))
+                         * (  ((row.CTL ** 3) * row.DL * (row.DL - row.DV) * g * row.RR) 
                             / (row.RMUL * row.di * row.TsTp)
                             ) ** 0.25
-                         / (1 + 0.741 * ((1 - row.x) / row.x) ** 0.3321)
+                         
                        ) 
     h_a = lambda row: h_as(row) * A(row) * C(row)
-    h_d = lambda row: (C(row) * (  h_ds(row) * (2.4 * (Rx(row) - 1) ** 1.466 * C1(row) ** 0.6875 + 1) 
-                                 + h_lo(row) * (Rx(row) * (1 - row.x ** 0.087) )
+    h_d = lambda row: (C(row) * (  h_ds(row) * (2.4 * (row.x ** 0.1206) * ((Rx(row) - 1) ** 1.466) * (C1(row) ** 0.6875) + 1) 
+                                 + h_lo(row) * (Rx(row) * (1 - (row.x ** 0.087)))
                                 )
                        )
     try:
@@ -476,6 +485,9 @@ def Cavallini(row):
 def apply_Cavallini(fintubes):
     fintubes["h_Cavallini"] = fintubes.apply(Cavallini, axis=1)
 
+
+def test_Cavallini():
+    print(Cavallini(fintubes.iloc[4123]))
 ###################################################################################################
 # optimisers
 
@@ -881,7 +893,7 @@ if __name__ == "__main__":
     if "-p" in sys.argv or "--plot" in sys.argv:
         plot = True
     if "-pa" in sys.argv or "--plotall" in sys.argv:
-        plot_all(fintubes)
+        #plot_all(fintubes)
     if "-t" in sys.argv or "--test" in sys.argv:
         test_all(fintubes)
     if "-s" in sys.argv or "--seed" in sys.argv:
@@ -892,7 +904,7 @@ if __name__ == "__main__":
             model = regress_NN(fintubes, plot)
             fname = input("what name would you like to give this model? (leave blank to cancel)\n")
             if fname:
-                model.save(fname)
+                model.save("models/" + fname)
     if "--opt" in sys.argv or "-o" in sys.argv:
         try:
             m_type = sys.argv[sys.argv.index("--opt") + 1]
@@ -912,7 +924,7 @@ if __name__ == "__main__":
                 optimise_FC(fintubes, model)
             elif m_type == "nn":
                 from keras.models import load_model
-                model = load_model("models/norm_lin5_elu_b128_e100")
+                model = load_model("models/" + input("model name?"))
                 optimise_FC(fintubes, model)
             elif m_type == "PCA":
                 model = regress_all_PCA(fintubes, plot)
