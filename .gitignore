@@ -5,3 +5,4 @@ models/
 misc/
 a.out
 *.f95
+*.egg-info/
