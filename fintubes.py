@@ -28,7 +28,7 @@ General TODO:
 from functools import partial
 from itertools import product
 import logging
-from typing import Callable
+#from typing import Callable
 from markdown import markdown
 from matplotlib import cm
 import matplotlib.gridspec as gridspec
@@ -375,11 +375,11 @@ def regress_NN(fintubes, plot):
     """
     Implements a neural-net based regressor.
     """
-    from keras.models import Sequential
-    from keras.optimizers import Adam
-    from keras.layers import Dense, Dropout
-    from keras.layers.experimental.preprocessing import Normalization
-    from keras import backend as K
+    from tensorflow.keras.models import Sequential
+    from tensorflow.keras.optimizers import Adam
+    from tensorflow.keras.layers import Dense, Dropout
+    from tensorflow.keras.layers.experimental.preprocessing import Normalization
+    from tensorflow.keras import backend as K
 
     def coeff_determination(y_true, y_pred):
         SS_res =  K.sum(K.square( y_true-y_pred )) 
@@ -441,44 +441,43 @@ def Cavallini(row):
     Implements Cavallini (2009)
     """
     #testcase iloc[4123]
-    n_rat = lambda row: (4064.4 * row.di + 23.257) / int(row.nf)
-    C = lambda row: 1.0 if n_rat(row) >= 0.8 else n_rat(row)**1.904
+    n_rat = lambda row: (4064.4 * row.di + 23.257) / row.nf
+    C = lambda row: 1.0 if n_rat(row) >= 0.8 else n_rat(row) ** 1.904
     C1 = lambda row: 1.0 if J_g(row) >= J_g_crit(row) else J_g(row) / J_g_crit(row)
-    Fr = lambda row: (row.G**2) / (g * row.di * (row.DL - row.DV)**2)
+    Fr = lambda row: row.G ** 2 / (g * row.di * (row.DL - row.DV)**2)
     X_tt = lambda row: (row.RMUL / row.RMUV) ** 0.1 * (row.DV / row.DL ) ** 0.5 * ((1 - row.x) / row.x) ** 0.9
     J_g = lambda row: row.x * row.G / (g * row.di * row.DV * (row.DL - row.DV))**0.5
-    J_g_crit = lambda row: 0.6 * ((7.5 / (4.3 * X_tt(row)**1.1111 + 1))**-3 + 2.5**-3)**-0.3333
-    Rx = lambda row: ( ( ( 2 * row.hal * int(row.nf) * ((1 - np.sin(np.radians(row.alpha)) / 2)) 
+    J_g_crit = lambda row: 0.6 * ((7.5 / (4.3 * X_tt(row) ** 1.1111 + 1)) ** -3 + 2.5 ** -3) ** -0.3333
+    Rx = lambda row: ( ( ( 2 * row.hal * row.nf * ((1 - np.sin(np.radians(row.alpha)) / 2)) 
                            / (pi * row.di * np.cos(np.radians(row.alpha) / 2)) 
                           ) 
                           + 1.0 
                         ) / np.cos(np.radians(row.beta) ) 
                       )
     Prandtl_l = lambda row: row.RMUL * row.CPL / row.CTL
-    h_lo = lambda row: 0.023 * (row.CTL / row.di) * ((row.G * row.di / row.RMUL)**0.8) * (Prandtl_l(row)**0.4)
-    A = lambda row: 1.0 + 1.119 * (Fr(row) ** -0.3821) * ((Rx(row) - 1) ** 0.3586)
+    h_lo = lambda row: 0.023 * (row.CTL / row.di) * (row.G * row.di / row.RMUL) ** 0.8 * Prandtl_l(row) ** 0.4
+    A = lambda row: 1.0 + 1.119 * Fr(row) ** -0.3821 * (Rx(row) - 1) ** 0.3586
     h_as = lambda row: h_lo(row) * (1 + (1.128 
-                                        * (row.x ** 0.817)
-                                        * ((row.DL / row.DV) ** 0.3685) 
-                                        * ((row.RMUL / row.RMUV) ** 0.2363) 
-                                        * ((1 - row.RMUV / row.RMUL)  ** 2.144)
-                                        * (Prandtl_l(row) ** -0.1)
+                                        * row.x ** 0.817
+                                        * (row.DL / row.DV) ** 0.3685
+                                        * (row.RMUL / row.RMUV) ** 0.2363 
+                                        * (1 - row.RMUV / row.RMUL)  ** 2.144
+                                        * Prandtl_l(row) ** -0.1
                                         )
                                     )
-    h_ds = lambda row: ( 0.725 / (1 + 0.741 * (((1 - row.x) / row.x) ** 0.3321))
+    h_ds = lambda row: ( 0.725 / (1 + 0.741 * ((1 - row.x) / row.x) ** 0.3321)
                          * (  ((row.CTL ** 3) * row.DL * (row.DL - row.DV) * g * row.RR) 
                             / (row.RMUL * row.di * row.TsTp)
                             ) ** 0.25
-                         
-                       ) 
+                       )
     h_a = lambda row: h_as(row) * A(row) * C(row)
-    h_d = lambda row: (C(row) * (  h_ds(row) * (2.4 * (row.x ** 0.1206) * ((Rx(row) - 1) ** 1.466) * (C1(row) ** 0.6875) + 1) 
-                                 + h_lo(row) * (Rx(row) * (1 - (row.x ** 0.087)))
+    h_d = lambda row: (C(row) * (  h_ds(row) * (2.4 * row.x ** 0.1206 * (Rx(row) - 1) ** 1.466 * C1(row) ** 0.6875 + 1) 
+                                 + h_lo(row) * (Rx(row) * (1 - row.x ** 0.087))
                                 )
                        )
     try:
         assert row.x <= 1.0 #nonphysical vapour quality
-        return ((h_a(row))**3 + (h_d(row))**3)**0.333
+        return (h_a(row) ** 3 + h_d(row) ** 3) ** 0.333
     except (ZeroDivisionError, AssertionError):
         return np.nan
 
@@ -893,13 +892,17 @@ if __name__ == "__main__":
     if "-p" in sys.argv or "--plot" in sys.argv:
         plot = True
     if "-pa" in sys.argv or "--plotall" in sys.argv:
-        #plot_all(fintubes)
+        plot_all(fintubes)
+    if "--Cav" in sys.argv:
+        apply_Cavallini(fintubes)
+        print(f"Cavallini R-squared = {sm.OLS(fintubes.h, fintubes.h_Cavallini, missing='drop').fit().rsquared:.2f}")
+        plot_parity_Cav(fintubes)
     if "-t" in sys.argv or "--test" in sys.argv:
         test_all(fintubes)
     if "-s" in sys.argv or "--seed" in sys.argv:
         make_seeds(fintubes)
     if "--nn" in sys.argv:
-        import keras
+        import tensorflow.keras
         if "--opt" not in sys.argv:
             model = regress_NN(fintubes, plot)
             fname = input("what name would you like to give this model? (leave blank to cancel)\n")

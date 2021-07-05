@@ -1,7 +1,13 @@
 globali.dat
 globali.raw.dat
+globali.raw
+global.*
 figures/
 models/
 misc/
 a.out
+poetry_error.txt
+makefile
 *.f95
+*.egg-info/
+*.html
