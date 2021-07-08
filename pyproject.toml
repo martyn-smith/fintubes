@@ -5,9 +5,10 @@ description = "analysis package for finnned tube condensers"
 authors = ["Martyn <1931150@brunel.ac.uk>"]
 
 [tool.poetry.dependencies]
+# WARNING: keras and tensorflow installs are not mutually deterministic.
+# I'm sorry, but I cannot help. Try and ensure keras is installed first.
 python = "^3.9"
 Keras = "2.4.3"
-Keras-Preprocessing= "1.1.2"
 Markdown = "3.3.4"
 matplotlib = "^3.3.4"
 numpy = "1.19.5"
@@ -15,7 +16,7 @@ pandas = "^1.2.4"
 scikit-learn = "0.24.2"
 seaborn = "0.11.1"
 statsmodels = "^0.12.2"
-tensorflow = "2.4.1"
+tensorflow = "2.5.0"
 
 [tool.poetry.dev-dependencies]
 
