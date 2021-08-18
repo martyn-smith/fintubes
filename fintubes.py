@@ -375,11 +375,11 @@ def regress_NN(fintubes, plot):
     """
     Implements a neural-net based regressor.
     """
-    from keras.models import Sequential
-    from keras.optimizers import Adam
-    from keras.layers import Dense, Dropout
-    from keras.layers.experimental.preprocessing import Normalization
-    from keras import backend as K
+    from tensorflow.keras.models import Sequential
+    from tensorflow.keras.optimizers import Adam
+    from tensorflow.keras.layers import Dense, Dropout
+    from tensorflow.keras.layers.experimental.preprocessing import Normalization
+    from tensorflow.keras import backend as K
 
     def coeff_determination(y_true, y_pred):
         SS_res =  K.sum(K.square( y_true-y_pred )) 
@@ -902,7 +902,7 @@ if __name__ == "__main__":
     if "-s" in sys.argv or "--seed" in sys.argv:
         make_seeds(fintubes)
     if "--nn" in sys.argv:
-        import keras
+        import tensorflow.keras
         if "--opt" not in sys.argv:
             model = regress_NN(fintubes, plot)
             fname = input("what name would you like to give this model? (leave blank to cancel)\n")
