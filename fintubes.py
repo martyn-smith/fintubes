@@ -658,6 +658,8 @@ def plot_alpha_beta_FC(fintubes, model):
     plt.show()
 
 def plot_alpha_beta_Cav(fintubes):
+    if "h_Cavallini" not in fintubes.columns: 
+        apply_Cavallini(fintubes)
     fig = plt.figure()
     ax = Axes3D(fig)
     ax.plot_trisurf(fintubes.alpha, fintubes.beta, fintubes.h_Cavallini, cmap=cm.plasma, linewidth=0.1)
