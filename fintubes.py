@@ -783,6 +783,7 @@ def plot_all(fintubes):
     plot_diameter(fintubes)
     plot_alpha(fintubes)
     plot_hal(fintubes)
+    apply_Cavallini(fintubes)
     plot_alpha_beta_Cav(fintubes)
 
 ###################################################################################################
