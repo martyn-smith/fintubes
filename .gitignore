@@ -6,6 +6,9 @@ figures/
 models/
 misc/
 a.out
+.venv/
+.pdm-build/
+uv.lock
 poetry_error.txt
 makefile
 *.f95
