@@ -12,7 +12,7 @@ logging.getLogger("tensorflow").setLevel(logging.FATAL)
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.layers import Dense, Dropout
-from tensorflow.keras.layers.experimental.preprocessing import Normalization
+from tensorflow.keras.layers import Normalization
 from tensorflow.keras import backend as K
 from fintubes import *
 
